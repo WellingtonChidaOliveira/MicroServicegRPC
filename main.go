@@ -12,7 +12,7 @@ import (
 func main() {
 	client := client.New("http://localhost:3000")
 
-	price, err := client.FetchPrice(context.Background(), "BT")
+	price, err := client.FetchPrice(context.Background(), "BTC")
 	if err != nil {
 		log.Fatal(err)
 	}
