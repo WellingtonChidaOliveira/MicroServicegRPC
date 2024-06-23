@@ -2,18 +2,27 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
+
+	"gitub.com/wellingtonchida/micro/client"
 )
 
 func main() {
+	client := client.New("http://localhost:3000")
 
-	svc := NewLoggingService(NewMetricsService(&priceFetcher{}))
-
-	price, err := svc.FetchPrice(context.Background(), "WO")
+	price, err := client.FetchPrice(context.Background(), "BT")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(price)
+	fmt.Printf("%+v\n", price)
+
+	return
+	listenAddr := flag.String("listen-addr", ":3000", "server listen address")
+	svc := NewLoggingService(NewMetricsService(&priceFetcher{}))
+
+	server := NewJSONAPIServer(*listenAddr, svc)
+	server.Run()
 }
